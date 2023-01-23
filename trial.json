@@ -1,0 +1,1401 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The auto-scaling capabilities is based on Cluster Load Metrics and Time Alerts. Based on the Cluster Template used and the running services, Autoscale Service can access all the available metrics from the subsystem and define alerts based on this information.\n",
+    "version" : "2.68.0-b58-1-gc4415c5",
+    "title" : "Auto-scaling API"
+  },
+  "basePath" : "/api",
+  "tags" : [ {
+    "name" : "authorization"
+  }, {
+    "name" : "v4utils"
+  }, {
+    "name" : "v1distrox"
+  }, {
+    "name" : "v1scaling_activities"
+  }, {
+    "name" : "v1history"
+  } ],
+  "schemes" : [ "http", "https" ],
+  "paths" : {
+    "/authorization/info" : {
+      "get" : {
+        "tags" : [ "authorization" ],
+        "summary" : "list of required permissions for APIs",
+        "description" : "",
+        "operationId" : "authorizationInfo",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ApiAuthorizationInfo"
+              },
+              "uniqueItems" : true
+            }
+          }
+        }
+      }
+    },
+    "/v4/utils/check_right" : {
+      "post" : {
+        "tags" : [ "v4utils" ],
+        "summary" : "Checking rights from UI in account",
+        "description" : "Check right from UI",
+        "operationId" : "checkRightInAccount",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CheckRightV4Request"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CheckRightV4Response"
+            }
+          }
+        }
+      }
+    },
+    "/v4/utils/check_right_by_crn" : {
+      "post" : {
+        "tags" : [ "v4utils" ],
+        "summary" : "Checking rights from UI by resource CRN",
+        "description" : "Check right from UI",
+        "operationId" : "checkRightByCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CheckResourceRightsV4Request"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CheckResourceRightsV4Response"
+            }
+          }
+        }
+      }
+    },
+    "/v4/utils/check_right_on_resources" : {
+      "post" : {
+        "tags" : [ "v4utils" ],
+        "summary" : "Checking right from Uluwatu by resource CRNs",
+        "description" : "Check right from Uluwatu",
+        "operationId" : "checkRightOnResources",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CheckRightOnResourcesV4Request"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CheckRightOnResourcesV4Response"
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/crn/{crn}/autoscale" : {
+      "post" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "enable or disable cluster's autoscale feature",
+        "description" : "Ambari cluster.",
+        "operationId" : "enableAutoscaleForClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/AutoscaleState"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/name/{name}/autoscale" : {
+      "post" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "enable or disable cluster's autoscale feature",
+        "description" : "Ambari cluster.",
+        "operationId" : "enableAutoscaleForClusterName",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/AutoscaleState"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/crn/{crn}/autoscale_config" : {
+      "post" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "update cluster's autoscale config",
+        "description" : "DataHub cluster.",
+        "operationId" : "updateAutoscaleConfigByClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DistroXAutoscaleClusterRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/name/{name}/autoscale_config" : {
+      "post" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "update cluster's autoscale config",
+        "description" : "DataHub cluster.",
+        "operationId" : "updateAutoscaleConfigByClusterName",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DistroXAutoscaleClusterRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/crn/{crn}" : {
+      "get" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "retrieve cluster",
+        "description" : "DataHub cluster.",
+        "operationId" : "getClusterByCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "delete a cluster's alerts",
+        "description" : "DataHub cluster.",
+        "operationId" : "deleteAlertsForClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/v1/distrox/name/{name}" : {
+      "get" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "retrieve cluster",
+        "description" : "DataHub cluster.",
+        "operationId" : "getClusterByName",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "delete a cluster's alerts",
+        "description" : "DataHub cluster.",
+        "operationId" : "deleteAlertsForClusterName",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/v1/distrox" : {
+      "get" : {
+        "tags" : [ "v1distrox" ],
+        "summary" : "retrieve all cluster",
+        "description" : "DataHub cluster.",
+        "operationId" : "getClusters",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleClusterResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_name/{clusterName}" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all scaling activities in given time duration in minutes",
+        "description" : "DataHub cluster.",
+        "operationId" : "getScalingActivitiesInDurationByClusterName",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationInMinutes",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 60,
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_name/{clusterName}/failed_activities" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all failed scaling activities in given duration in minutes",
+        "description" : "DataHub cluster.",
+        "operationId" : "getFailedScalingActivitiesInGivenDurationByClusterName",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationInMinutes",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 60,
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_crn/{clusterCrn}/failed_activities" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all failed scaling activities in given duration in minutes",
+        "description" : "DataHub cluster.",
+        "operationId" : "getFailedScalingActivitiesInGivenDurationByClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterCrn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationInMinutes",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 60,
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_name/{clusterName}/time_interval" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all scaling activities between start and end time in epoch milliseconds",
+        "description" : "DataHub cluster.",
+        "operationId" : "getScalingActivitiesBetweenIntervalByClusterName",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "startTimeFromInEpochMilliSec",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "startTimeUntilInEpochMilliSec",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_crn/{clusterCrn}/time_interval" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all scaling activities between start and end time in epoch milliseconds",
+        "description" : "DataHub cluster.",
+        "operationId" : "getScalingActivitiesBetweenIntervalByClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterCrn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "startTimeFromInEpochMilliSec",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "startTimeUntilInEpochMilliSec",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/activity_crn/{activityCrn}" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get a particular scaling activity using it's crn",
+        "description" : "DataHub cluster.",
+        "operationId" : "getScalingActivityUsingActivityCrn",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "activityCrn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/scaling_activities/cluster_crn/{clusterCrn}" : {
+      "get" : {
+        "tags" : [ "v1scaling_activities" ],
+        "summary" : "Get all scaling activities in given time duration in minutes",
+        "description" : "DataHub cluster.",
+        "operationId" : "getScalingActivitiesInDurationByClusterCrn",
+        "schemes" : [ "http", "https" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterCrn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationInMinutes",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 60,
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DistroXAutoscaleScalingActivityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/crn/{crn}/history" : {
+      "get" : {
+        "tags" : [ "v1history" ],
+        "summary" : "retrieve history for cluster",
+        "description" : "Get Auto-scaling history on a specific cluster",
+        "operationId" : "getHistoryByCrn",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "crn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "history record count",
+          "required" : false,
+          "type" : "integer",
+          "default" : 200,
+          "maximum" : 2000,
+          "minimum" : 1,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/AutoscaleClusterHistoryResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/distrox/name/{name}/history" : {
+      "get" : {
+        "tags" : [ "v1history" ],
+        "summary" : "retrieve history for cluster",
+        "description" : "Get Auto-scaling history on a specific cluster",
+        "operationId" : "getHistoryByName",
+        "schemes" : [ "http", "https" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "history record count",
+          "required" : false,
+          "type" : "integer",
+          "default" : 200,
+          "maximum" : 2000,
+          "minimum" : 1,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/AutoscaleClusterHistoryResponse"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ApiAuthorizationInfo" : {
+      "type" : "object",
+      "properties" : {
+        "path" : {
+          "type" : "string"
+        },
+        "httpMethod" : {
+          "type" : "string"
+        },
+        "newAuthorization" : {
+          "$ref" : "#/definitions/NewAuthorizationInfo"
+        },
+        "message" : {
+          "type" : "string"
+        }
+      }
+    },
+    "FieldAuthorizationInfo" : {
+      "type" : "object",
+      "properties" : {
+        "fieldName" : {
+          "type" : "string"
+        },
+        "permission" : {
+          "type" : "string"
+        }
+      }
+    },
+    "NewAuthorizationInfo" : {
+      "type" : "object",
+      "properties" : {
+        "permissionsNeededForApi" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "permissionsNeededForRequestObject" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/definitions/FieldAuthorizationInfo"
+          }
+        }
+      }
+    },
+    "CheckRightV4Response" : {
+      "type" : "object",
+      "properties" : {
+        "responses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CheckRightV4SingleResponse"
+          }
+        }
+      }
+    },
+    "CheckRightV4SingleResponse" : {
+      "type" : "object",
+      "properties" : {
+        "right" : {
+          "type" : "string",
+          "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+        },
+        "result" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "CheckRightV4Request" : {
+      "type" : "object",
+      "properties" : {
+        "rights" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+          }
+        }
+      }
+    },
+    "CheckResourceRightV4SingleResponse" : {
+      "type" : "object",
+      "properties" : {
+        "resourceCrn" : {
+          "type" : "string"
+        },
+        "rights" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CheckRightV4SingleResponse"
+          }
+        }
+      }
+    },
+    "CheckResourceRightsV4Response" : {
+      "type" : "object",
+      "properties" : {
+        "responses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CheckResourceRightV4SingleResponse"
+          }
+        }
+      }
+    },
+    "CheckResourceRightsV4Request" : {
+      "type" : "object",
+      "properties" : {
+        "rights" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+          }
+        },
+        "resourceRights" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ResourceRightsV4"
+          }
+        }
+      }
+    },
+    "ResourceRightsV4" : {
+      "type" : "object",
+      "properties" : {
+        "resourceCrn" : {
+          "type" : "string"
+        },
+        "rights" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+          }
+        }
+      }
+    },
+    "CheckResourceRightV4Response" : {
+      "type" : "object",
+      "properties" : {
+        "resourceCrn" : {
+          "type" : "string"
+        },
+        "result" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "CheckRightOnResourcesV4Response" : {
+      "type" : "object",
+      "properties" : {
+        "right" : {
+          "type" : "string",
+          "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+        },
+        "responses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CheckResourceRightV4Response"
+          }
+        }
+      }
+    },
+    "CheckRightOnResourcesV4Request" : {
+      "type" : "object",
+      "required" : [ "resourceCrns", "right" ],
+      "properties" : {
+        "right" : {
+          "type" : "string",
+          "enum" : [ "ENV_CREATE", "LIST_ASSIGNED_ROLES", "CREATE_CLUSTER_TEMPLATE", "CREATE_CLUSTER_DEFINITION", "CREATE_CREDENTIAL", "CREATE_RECIPE", "CREATE_IMAGE_CATALOG", "CREATE_PROXY", "ENV_START", "ENV_STOP", "ENV_DELETE", "ENV_DESCRIBE", "ENV_EDIT", "CHANGE_CRED", "DH_CREATE", "UPDATE_AZURE_ENCRYPTION_RESOURCES", "ENV_VERTICAL_SCALING", "DH_START", "DH_STOP", "DH_DELETE", "DH_REPAIR", "DH_RESIZE", "DH_RETRY", "DH_DESCRIBE", "DH_RECOVER", "DH_UPGRADE", "DH_REFRESH_RECIPES", "DH_VERTICAL_SCALING", "SDX_UPGRADE", "SDX_RECOVER", "SDX_REPAIR", "SDX_RETRY", "SDX_DESCRIBE", "SDX_RESIZE", "SDX_VERTICAL_SCALING", "SDX_REFRESH_RECIPES" ]
+        },
+        "resourceCrns" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "DistroXAutoscaleClusterResponse" : {
+      "type" : "object",
+      "properties" : {
+        "stackName" : {
+          "type" : "string",
+          "description" : "Name of stack in Cloudbreak"
+        },
+        "stackCrn" : {
+          "type" : "string",
+          "description" : "crn of the stack in Cloudbreak"
+        },
+        "state" : {
+          "type" : "string",
+          "description" : "State of the cluster",
+          "enum" : [ "RUNNING", "SUSPENDED", "PENDING" ]
+        },
+        "stackType" : {
+          "type" : "string",
+          "description" : "Type of stack in Cloudbreak",
+          "enum" : [ "WORKLOAD", "DATALAKE", "TEMPLATE", "LEGACY" ]
+        },
+        "autoscalingEnabled" : {
+          "type" : "boolean",
+          "description" : "Indicate that the Autoscaling feature set is Enabled or Disabled"
+        },
+        "stopStartScalingEnabled" : {
+          "type" : "boolean",
+          "description" : "Indicates if stop start scaling feature is enabled or disabled"
+        },
+        "timeAlerts" : {
+          "type" : "array",
+          "description" : "Time based alerts of the cluster",
+          "items" : {
+            "$ref" : "#/definitions/TimeAlertResponse"
+          }
+        },
+        "loadAlerts" : {
+          "type" : "array",
+          "description" : "Load based alerts of the cluster",
+          "items" : {
+            "$ref" : "#/definitions/LoadAlertResponse"
+          }
+        }
+      }
+    },
+    "LoadAlertConfigurationResponse" : {
+      "type" : "object",
+      "properties" : {
+        "minResourceValue" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The lower bound for the resource"
+        },
+        "maxResourceValue" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The upper bound for the resource"
+        },
+        "coolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins between successive cluster autoscaling actions. This is overridden by the scaleUpCoolDownMinutes/scaleDownCoolDownMinutes if they are specified"
+        },
+        "scaleUpCoolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins for scaleup after last autoscaling action."
+        },
+        "scaleDownCoolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins for scaledown after last autoscaling action."
+        },
+        "maxScaleUpStepSize" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The max step size for scaleup."
+        },
+        "maxScaleDownStepSize" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The max step size for scaledown."
+        }
+      }
+    },
+    "LoadAlertResponse" : {
+      "type" : "object",
+      "properties" : {
+        "alertName" : {
+          "type" : "string",
+          "description" : "Name of the alert",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description of the alert",
+          "minLength" : 0,
+          "maxLength" : 250
+        },
+        "crn" : {
+          "type" : "string",
+          "description" : "Crn of the alert"
+        },
+        "scalingPolicy" : {
+          "description" : "Id of the scaling ploicy",
+          "$ref" : "#/definitions/ScalingPolicyResponse"
+        },
+        "loadAlertConfiguration" : {
+          "description" : "Configuration of Load Alert",
+          "$ref" : "#/definitions/LoadAlertConfigurationResponse"
+        }
+      }
+    },
+    "ScalingPolicyResponse" : {
+      "type" : "object",
+      "required" : [ "adjustmentType" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the policy",
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "adjustmentType" : {
+          "type" : "string",
+          "description" : "Type of the scaling count",
+          "enum" : [ "NODE_COUNT", "PERCENTAGE", "EXACT", "LOAD_BASED" ]
+        },
+        "scalingAdjustment" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Count of the scaling"
+        },
+        "hostGroup" : {
+          "type" : "string",
+          "description" : "Name of hostgroup which affected by the scaling",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        }
+      }
+    },
+    "TimeAlertResponse" : {
+      "type" : "object",
+      "properties" : {
+        "alertName" : {
+          "type" : "string",
+          "description" : "Name of the alert",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description of the alert",
+          "minLength" : 0,
+          "maxLength" : 250
+        },
+        "crn" : {
+          "type" : "string",
+          "description" : "Crn of the alert"
+        },
+        "timeZone" : {
+          "type" : "string",
+          "description" : "Timezone of the time alert"
+        },
+        "cron" : {
+          "type" : "string",
+          "description" : "Cron expression of the time alert"
+        },
+        "scalingPolicy" : {
+          "description" : "Id of the scaling ploicy",
+          "$ref" : "#/definitions/ScalingPolicyResponse"
+        }
+      }
+    },
+    "AutoscaleState" : {
+      "type" : "object",
+      "properties" : {
+        "enableAutoscaling" : {
+          "type" : "boolean",
+          "description" : "field to switch on or off autoscaling feature"
+        },
+        "useStopStartMechanism" : {
+          "type" : "boolean",
+          "description" : "field to switch on or off the stop start scaling feature."
+        }
+      }
+    },
+    "DistroXAutoscaleClusterRequest" : {
+      "type" : "object",
+      "required" : [ "enableAutoscaling" ],
+      "properties" : {
+        "enableAutoscaling" : {
+          "type" : "boolean",
+          "description" : "Enable or Disable the Autoscaling feature set on the underlying Periscope cluster"
+        },
+        "useStopStartMechanism" : {
+          "type" : "boolean",
+          "description" : "Enable or Disable the StopStart scaling feature set on the underlying Periscope cluster"
+        },
+        "timeAlertRequests" : {
+          "type" : "array",
+          "description" : "Time based alerts of the cluster",
+          "items" : {
+            "$ref" : "#/definitions/TimeAlertRequest"
+          }
+        },
+        "loadAlertRequests" : {
+          "type" : "array",
+          "description" : "Load based alerts of the cluster",
+          "items" : {
+            "$ref" : "#/definitions/LoadAlertRequest"
+          }
+        }
+      }
+    },
+    "LoadAlertConfigurationRequest" : {
+      "type" : "object",
+      "required" : [ "maxResourceValue", "minResourceValue" ],
+      "properties" : {
+        "minResourceValue" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The lower bound for the resource",
+          "minimum" : 0
+        },
+        "maxResourceValue" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The upper bound for the resource",
+          "minimum" : 0
+        },
+        "coolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins between successive cluster autoscaling actions. This is overridden by the scaleUpCoolDownMinutes/scaleDownCoolDownMinutes if they are specified",
+          "minimum" : 1,
+          "maximum" : 180
+        },
+        "scaleUpCoolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins for scaleup after last autoscaling action.",
+          "minimum" : 1,
+          "maximum" : 180
+        },
+        "scaleDownCoolDownMinutes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "CoolDown Mins for scaledown after last autoscaling action.",
+          "minimum" : 1,
+          "maximum" : 180
+        },
+        "maxScaleUpStepSize" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The max step size for scaleup.",
+          "minimum" : 2,
+          "maximum" : 500
+        },
+        "maxScaleDownStepSize" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The max step size for scaledown.",
+          "minimum" : 2,
+          "maximum" : 500
+        }
+      }
+    },
+    "LoadAlertRequest" : {
+      "type" : "object",
+      "required" : [ "loadAlertConfiguration", "scalingPolicy" ],
+      "properties" : {
+        "alertName" : {
+          "type" : "string",
+          "description" : "Name of the alert",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description of the alert",
+          "minLength" : 0,
+          "maxLength" : 250
+        },
+        "loadAlertConfiguration" : {
+          "description" : "Configuration of Load Alert",
+          "$ref" : "#/definitions/LoadAlertConfigurationRequest"
+        },
+        "scalingPolicy" : {
+          "description" : "Id of the scaling ploicy",
+          "$ref" : "#/definitions/ScalingPolicyRequest"
+        }
+      }
+    },
+    "ScalingPolicyRequest" : {
+      "type" : "object",
+      "required" : [ "adjustmentType" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the policy",
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "adjustmentType" : {
+          "type" : "string",
+          "description" : "Type of the scaling count",
+          "enum" : [ "NODE_COUNT", "PERCENTAGE", "EXACT", "LOAD_BASED" ]
+        },
+        "scalingAdjustment" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Count of the scaling"
+        },
+        "hostGroup" : {
+          "type" : "string",
+          "description" : "Name of hostgroup which affected by the scaling",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        }
+      }
+    },
+    "TimeAlertRequest" : {
+      "type" : "object",
+      "required" : [ "scalingPolicy" ],
+      "properties" : {
+        "alertName" : {
+          "type" : "string",
+          "description" : "Name of the alert",
+          "minLength" : 0,
+          "maxLength" : 250,
+          "pattern" : "(^[a-zA-Z][-a-zA-Z0-9]*$)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description of the alert",
+          "minLength" : 0,
+          "maxLength" : 250
+        },
+        "timeZone" : {
+          "type" : "string",
+          "description" : "Timezone of the time alert",
+          "minLength" : 0,
+          "maxLength" : 50
+        },
+        "cron" : {
+          "type" : "string",
+          "description" : "Cron expression of the time alert",
+          "minLength" : 0,
+          "maxLength" : 100
+        },
+        "scalingPolicy" : {
+          "description" : "Id of the scaling ploicy",
+          "$ref" : "#/definitions/ScalingPolicyRequest"
+        }
+      }
+    },
+    "DistroXAutoscaleScalingActivityResponse" : {
+      "type" : "object",
+      "properties" : {
+        "activityCrn" : {
+          "type" : "string",
+          "description" : "crn value of the particular scaling activity"
+        },
+        "startTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "start time of the scaling activity"
+        },
+        "endTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "end time of the activity"
+        },
+        "scalingActivityReason" : {
+          "type" : "string",
+          "description" : "Reason for the scaling activity"
+        },
+        "activityStatus" : {
+          "type" : "string",
+          "enum" : [ "ACTIVITY_PENDING", "METRICS_COLLECTION_SUCCESS", "METRICS_COLLECTION_FAILED", "UPSCALE_TRIGGER_SUCCESS", "UPSCALE_TRIGGER_FAILED", "DOWNSCALE_TRIGGER_SUCCESS", "DOWNSCALE_TRIGGER_FAILED", "SCALING_FLOW_IN_PROGRESS", "SCALING_FLOW_SUCCESS", "SCALING_FLOW_FAILED" ]
+        }
+      }
+    },
+    "AutoscaleClusterHistoryActivity" : {
+      "type" : "object",
+      "properties" : {
+        "adjustmentType" : {
+          "type" : "string",
+          "description" : "Type of adjustment",
+          "enum" : [ "NODE_COUNT", "PERCENTAGE", "EXACT", "LOAD_BASED" ]
+        },
+        "adjustment" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Count of scaling"
+        },
+        "hostGroup" : {
+          "type" : "string",
+          "description" : "The affected hostgroup name"
+        },
+        "originalNodeCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The node count before of the scaling"
+        },
+        "properties" : {
+          "type" : "object",
+          "description" : "Additional properties",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "autoscalingType" : {
+          "type" : "string",
+          "description" : "Type of the alert event"
+        }
+      }
+    },
+    "AutoscaleClusterHistoryResponse" : {
+      "type" : "object",
+      "properties" : {
+        "stackCrn" : {
+          "type" : "string",
+          "description" : "crn of the cloudbreak stack"
+        },
+        "scalingStatus" : {
+          "type" : "string",
+          "description" : "Status of scaling activity",
+          "enum" : [ "FAILED", "SUCCESS", "ENABLED", "DISABLED", "CONFIG_UPDATED", "TRIGGER_FAILED", "TRIGGER_INFO" ]
+        },
+        "statusReason" : {
+          "type" : "string",
+          "description" : "Reason of the status"
+        },
+        "timestamp" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Time of the creation"
+        },
+        "autoscaleClusterHistoryActivity" : {
+          "description" : "Scaling Activity undertaken",
+          "$ref" : "#/definitions/AutoscaleClusterHistoryActivity"
+        }
+      }
+    }
+  }
+}
